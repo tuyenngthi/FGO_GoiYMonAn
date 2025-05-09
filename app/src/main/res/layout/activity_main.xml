@@ -36,7 +36,7 @@
 
     <!-- Nhập email -->
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/etEmail"
         android:layout_width="327dp"
         android:layout_height="50dp"
         android:layout_marginTop="44dp"
@@ -50,22 +50,22 @@
 
     <!-- Mật khẩu -->
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/etPassword"
         android:layout_width="327dp"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/edittext_border"
         android:hint="Nhập mật khẩu"
         android:inputType="textPassword"
-        android:drawableEnd="@drawable/close_eye"
+        android:drawableEnd="@drawable/ic_eye_off"
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/email" />
+        app:layout_constraintTop_toBottomOf="@id/etEmail" />
 
     <!-- Nút Đăng nhập -->
     <Button
-        android:id="@+id/login_button"
+        android:id="@+id/btnLogin"
         android:layout_width="327dp"
         android:layout_height="50dp"
         android:layout_marginTop="24dp"
@@ -77,13 +77,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/password" />
+        app:layout_constraintTop_toBottomOf="@id/etPassword" />
 
     <!-- Link "Quên mật khẩu?" -->
-
-    <!-- Text "Bạn chưa có tài khoản?" -->
     <TextView
-        android:id="@+id/forgot_password_text"
+        android:id="@+id/tvForgotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -95,10 +93,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.595"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_button" />
+        app:layout_constraintTop_toBottomOf="@id/btnLogin" />
 
+    <!-- Text "Bạn chưa có tài khoản?" -->
     <TextView
-        android:id="@+id/sign_up_text"
+        android:id="@+id/tvSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -109,11 +108,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.326"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/forgot_password_text" />
+        app:layout_constraintTop_toBottomOf="@id/tvForgotPassword" />
 
     <!-- Link "Đăng ký" -->
     <TextView
-        android:id="@+id/sign_up_text_"
+        android:id="@+id/tvSignUp2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -128,7 +127,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.71"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/forgot_password_text" />
+        app:layout_constraintTop_toBottomOf="@id/tvForgotPassword" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -36,7 +36,7 @@
 
     <!-- Nhập email -->
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/etEmail"
         android:layout_width="327dp"
         android:layout_height="50dp"
         android:layout_marginTop="44dp"
@@ -48,39 +48,78 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title" />
 
+    <!-- TextView lỗi cho email -->
+    <TextView
+        android:id="@+id/tvEmailError"
+        android:layout_width="327dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="#FF0000"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/etEmail"
+        app:layout_constraintStart_toStartOf="@id/etEmail"
+        app:layout_constraintTop_toBottomOf="@id/etEmail" />
+
     <!-- Nhập mật khẩu -->
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/etPassword"
         android:layout_width="327dp"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/edittext_border"
         android:hint="Nhập mật khẩu"
         android:inputType="textPassword"
-        android:drawableEnd="@drawable/close_eye"
+        android:drawableEnd="@drawable/ic_eye_off"
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/email" />
+        app:layout_constraintTop_toBottomOf="@id/tvEmailError" />
+
+    <!-- TextView lỗi cho mật khẩu -->
+    <TextView
+        android:id="@+id/tvPasswordError"
+        android:layout_width="327dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="#FF0000"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/etPassword"
+        app:layout_constraintStart_toStartOf="@id/etPassword"
+        app:layout_constraintTop_toBottomOf="@id/etPassword" />
 
     <!-- Nhập lại mật khẩu -->
     <EditText
-        android:id="@+id/confirm_password"
+        android:id="@+id/etConfirmPassword"
         android:layout_width="327dp"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/edittext_border"
         android:hint="Nhập lại mật khẩu"
         android:inputType="textPassword"
-        android:drawableEnd="@drawable/close_eye"
+        android:drawableEnd="@drawable/ic_eye_off"
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/password" />
+        app:layout_constraintTop_toBottomOf="@id/tvPasswordError" />
+
+    <!-- TextView lỗi cho xác nhận mật khẩu -->
+    <TextView
+        android:id="@+id/tvConfirmPasswordError"
+        android:layout_width="327dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="#FF0000"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/etConfirmPassword"
+        app:layout_constraintStart_toStartOf="@id/etConfirmPassword"
+        app:layout_constraintTop_toBottomOf="@id/etConfirmPassword" />
 
     <!-- Nút Đăng ký -->
     <Button
-        android:id="@+id/sign_up_button"
+        android:id="@+id/btnSignUp"
         android:layout_width="327dp"
         android:layout_height="50dp"
         android:layout_marginTop="24dp"
@@ -92,11 +131,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/confirm_password" />
+        app:layout_constraintTop_toBottomOf="@id/tvConfirmPasswordError" />
 
     <!-- Văn bản "Bạn đã có tài khoản?" -->
     <TextView
-        android:id="@+id/login_text"
+        android:id="@+id/tvLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -107,11 +146,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.326"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sign_up_button" />
+        app:layout_constraintTop_toBottomOf="@id/btnSignUp" />
 
     <!-- Link "Đăng nhập" -->
     <TextView
-        android:id="@+id/login_text_"
+        android:id="@+id/tvLogin2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -123,6 +162,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.71"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sign_up_button" />
+        app:layout_constraintTop_toBottomOf="@id/btnSignUp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
