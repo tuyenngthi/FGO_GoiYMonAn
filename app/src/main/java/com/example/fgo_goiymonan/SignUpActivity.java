@@ -138,7 +138,7 @@ public class SignUpActivity extends AppCompatActivity {
                     //cập nhật trạng thái
                     editText.setTag(isVisible);
                     //di chuyển con trỏ tới cuối văn bản
-                    //editText.setSelection(editText.getText().length());
+                    editText.setSelection(editText.getText().length());
                     return true;
                 }
             }
