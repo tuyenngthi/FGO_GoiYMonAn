@@ -124,11 +124,13 @@ public class LoginActivity extends AppCompatActivity {
 
         //Thêm sự kiện nhấn cho TextView Quên mật khẩu
         tvForgotPassword.setOnClickListener(v -> {
-            //Chuyển sang giao diện quên mật khẩu
+
+
+            // Chuyển sang ForgotPasswordActivity
             Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
             startActivity(intent);
-            finish();
         });
+
 
         //Thêm sự kiện nhấn cho TextView Đăng ký
         tvSignUp.setOnClickListener(v -> {
@@ -217,4 +219,6 @@ public class LoginActivity extends AppCompatActivity {
         }
         return isValid;
     }
+
+
 }
