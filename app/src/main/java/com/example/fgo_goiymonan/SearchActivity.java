@@ -3,6 +3,7 @@ package com.example.fgo_goiymonan;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +31,9 @@ public class SearchActivity extends AppCompatActivity {
     private RecyclerView rvRecipes;
     private RecipeAdapter recipeAdapter;
     private SpoonacularApiService apiService;
-    private final String apiKey = "dd201726974f46b997769bd376a1eec8";
+    private final String apiKey = "147bf705637143f38526db405bba7da5";
+
+    private TextView tvNoResult; // thêm dòng này
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,7 @@ public class SearchActivity extends AppCompatActivity {
         tvAccount = findViewById(R.id.tvAccount);
         edtSearch = findViewById(R.id.edtSearch);
         rvRecipes = findViewById(R.id.rvRecipes);
+        tvNoResult = findViewById(R.id.tvNoResult); // ánh xạ
 
         rvRecipes.setLayoutManager(new LinearLayoutManager(this));
         recipeAdapter = new RecipeAdapter(new ArrayList<>());
@@ -81,9 +85,25 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<RecipeResponse> call, Response<RecipeResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    recipeAdapter.updateData(response.body().getResults());
+                    List<Recipe> recipes = response.body().getResults();
+                    if (recipes.isEmpty()) {
+                        tvNoResult.setVisibility(View.VISIBLE);
+                        recipeAdapter.updateData(new ArrayList<>()); // Xóa dữ liệu cũ
+                        return;
+                    } else {
+                        tvNoResult.setVisibility(View.GONE); // Ẩn nếu có kết quả
+                    }
+
+                    // Gọi API lấy nguyên liệu cho từng món
+                    for (Recipe recipe : recipes) {
+                        fetchRecipeIngredients(recipe);
+                    }
+
+                    // Hiển thị danh sách ban đầu (chưa có nguyên liệu)
+                    recipeAdapter.updateData(recipes);
                 } else {
                     Toast.makeText(SearchActivity.this, "Không tìm thấy món ăn", Toast.LENGTH_SHORT).show();
+                    tvNoResult.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -93,4 +113,36 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void fetchRecipeIngredients(Recipe recipe) {
+        Call<RecipeDetail> detailCall = apiService.getRecipeInformation(recipe.getId(), apiKey);
+        detailCall.enqueue(new Callback<RecipeDetail>() {
+            @Override
+            public void onResponse(Call<RecipeDetail> call, Response<RecipeDetail> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<RecipeDetail.ExtendedIngredient> ingredientsList = response.body().getExtendedIngredients();
+                    StringBuilder ingredientsText = new StringBuilder();
+
+                    // ✅ Giới hạn hiển thị tối đa 3 nguyên liệu
+                    for (int i = 0; i < Math.min(3, ingredientsList.size()); i++) {
+                        ingredientsText.append(ingredientsList.get(i).getOriginal());
+                        if (i < Math.min(3, ingredientsList.size()) - 1) {
+                            ingredientsText.append(", ");
+                        }
+                    }
+
+                    recipe.setIngredients(ingredientsText.toString().trim());
+
+                    // Cập nhật adapter
+                    recipeAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RecipeDetail> call, Throwable t) {
+                // Có thể log nếu cần
+            }
+        });
+    }
+
 }

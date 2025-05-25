@@ -36,6 +36,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
         Recipe recipe = recipeList.get(position);
         holder.tvTitle.setText(recipe.getTitle());
+        holder.tvIngredients.setText(recipe.getIngredients()); // Thêm dòng này
         Picasso.get().load(recipe.getImage()).into(holder.ivImage);
     }
 
@@ -46,12 +47,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     public static class RecipeViewHolder extends RecyclerView.ViewHolder {
         ImageView ivImage;
-        TextView tvTitle;
+        TextView tvTitle, tvIngredients; // Thêm biến tvIngredients
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
             ivImage = itemView.findViewById(R.id.ivImage);
             tvTitle = itemView.findViewById(R.id.tvTitle);
+            tvIngredients = itemView.findViewById(R.id.tvIngredients); // Ánh xạ view
         }
     }
 }

@@ -11,9 +11,14 @@ public class RecipeDetail {
 
     public static class ExtendedIngredient {
         private String original;
+        private String name;
 
         public String getOriginal() {
             return original;
+        }
+
+        public String getName() {
+            return name;
         }
     }
 }
