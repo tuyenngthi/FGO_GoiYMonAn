@@ -41,6 +41,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
         ivToggleConfirm.setOnClickListener(v -> togglePasswordVisibility(etConfirmPassword, ivToggleConfirm, isConfirmVisible = !isConfirmVisible));
 
         btnChangePassword.setOnClickListener(v -> changePassword());
+
+        ImageView ivBack = findViewById(R.id.ivBack);
+        ivBack.setOnClickListener(v -> finish());
+
     }
 
     private void changePassword() {
