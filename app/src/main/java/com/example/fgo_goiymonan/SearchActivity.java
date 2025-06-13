@@ -101,15 +101,12 @@ public class SearchActivity extends AppCompatActivity {
 
                     // Hiển thị danh sách ban đầu (chưa có nguyên liệu)
                     recipeAdapter.updateData(recipes);
-                } else {
-                    Toast.makeText(SearchActivity.this, "Không tìm thấy món ăn", Toast.LENGTH_SHORT).show();
-                    tvNoResult.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(Call<RecipeResponse> call, Throwable t) {
-                Toast.makeText(SearchActivity.this, "Lỗi mạng: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SearchActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

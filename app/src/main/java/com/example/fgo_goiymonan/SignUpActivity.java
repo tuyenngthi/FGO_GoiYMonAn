@@ -84,10 +84,10 @@ public class SignUpActivity extends AppCompatActivity {
                                 //gửi email xác thực
                                 user.sendEmailVerification().addOnCompleteListener(verifyTask -> {
                                     if (verifyTask.isSuccessful()) {
-                                        Toast.makeText(SignUpActivity.this, "Đăng ký thành công. Vui lòng kiểm tra email để xác minh.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SignUpActivity.this, "Registration successful. Please check your email for verification.", Toast.LENGTH_SHORT).show();
                                     }
                                     else {
-                                        Toast.makeText(SignUpActivity.this, "Không thể gửi email xác minh: " + verifyTask.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(SignUpActivity.this, "Unable to send verification email: " + verifyTask.getException().getMessage(), Toast.LENGTH_LONG).show();
                                     }
                                 });
                             }
@@ -97,7 +97,7 @@ public class SignUpActivity extends AppCompatActivity {
                             finish();
                         }
                         else {
-                            Toast.makeText(SignUpActivity.this, "Đăng ký thất bại: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUpActivity.this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -147,28 +147,28 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     //Hàm xử lý đăng ký
-    private boolean validateInput(String email, String password, String confirmPassword) {
+    private boolean validateInput(String email, String      password, String confirmPassword) {
         boolean isValid = true;
 
         //Kiểm tra email
         if (email.isEmpty()) {
-            emailErrorTextView.setText("Email không được để trống.");
+            emailErrorTextView.setText("The email cannot be empty..");
             emailErrorTextView.setVisibility(View.VISIBLE);
             isValid = false;
         } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailErrorTextView.setText("Email không hợp lệ.");
+            emailErrorTextView.setText("Invalid email.");
             emailErrorTextView.setVisibility(View.VISIBLE);
             isValid = false;
         }
 
         //Kiểm tra mật khẩu
         if (password.isEmpty()) {
-            passwordErrorTextView.setText("Mật khẩu không được để trống.");
+            passwordErrorTextView.setText("The password cannot be empty.");
             passwordErrorTextView.setVisibility(View.VISIBLE);
             isValid = false;
         }
         else if (password.length() < 6 || password.length() >= 4096) {
-            passwordErrorTextView.setText("Mật khẩu phải có ít nhất 6 ký tự.");
+            passwordErrorTextView.setText("The password must be at least 6 characters long.");
             passwordErrorTextView.setVisibility(View.VISIBLE);
             isValid = false;
         }
@@ -179,7 +179,7 @@ public class SignUpActivity extends AppCompatActivity {
             boolean hasDigit = password.matches(".*[0-9].*");
             boolean hasSpecialChar = password.matches(".*[!@#$%^&*(),.?\":{}|<>].*");
             if (!hasSpecialChar || !hasDigit || !hasLowerCase || !hasUpperCase) {
-                passwordErrorTextView.setText("Mật khẩu phải chứa kí tự in hoa, kí tự thường, số và kí tự đặc biệt.");
+                passwordErrorTextView.setText("The password must contain uppercase letters, lowercase letters, numbers, and special characters.");
                 passwordErrorTextView.setVisibility(View.VISIBLE);
                 isValid = false;
             }
@@ -187,11 +187,11 @@ public class SignUpActivity extends AppCompatActivity {
 
         //Kiểm tra xác nhận mật khẩu
         if (confirmPassword.isEmpty()) {
-            confirmPasswordErrorTextView.setText("Vui lòng xác nhận mật khẩu.");
+            confirmPasswordErrorTextView.setText("Please comfirm the password.");
             confirmPasswordErrorTextView.setVisibility(View.VISIBLE);
             isValid = false;
         } else if (!password.equals(confirmPassword)) {
-            confirmPasswordErrorTextView.setText("Mật khẩu xác nhận không khớp.");
+            confirmPasswordErrorTextView.setText("The confirm password does not match.");
             confirmPasswordErrorTextView.setVisibility(View.VISIBLE);
             isValid = false;
         }

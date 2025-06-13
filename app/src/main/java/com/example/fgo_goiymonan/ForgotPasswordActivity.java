@@ -30,13 +30,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
             // Kiểm tra rỗng
             if (email.isEmpty()) {
-                Toast.makeText(this, "Vui lòng nhập email", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             // Kiểm tra định dạng
             if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                Toast.makeText(this, "Email không đúng định dạng", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Email is not in correct format.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -44,21 +44,21 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             auth.fetchSignInMethodsForEmail(email)
                     .addOnSuccessListener(result -> {
                         if (result.getSignInMethods() == null || result.getSignInMethods().isEmpty()) {
-                            Toast.makeText(this, "Email không tồn tại trong hệ thống", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Email does not exist in the system", Toast.LENGTH_SHORT).show();
                         } else {
                             // Gửi email reset password
                             auth.sendPasswordResetEmail(email)
                                     .addOnSuccessListener(unused -> {
-                                        Toast.makeText(this, "Email đổi mật khẩu đã được gửi", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(this, "Password change email has been sent", Toast.LENGTH_LONG).show();
                                         finish(); // quay lại màn hình login
                                     })
                                     .addOnFailureListener(e -> {
-                                        Toast.makeText(this, "Lỗi gửi email: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(this, "Email sending error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                     });
                         }
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(this, "Lỗi kiểm tra email: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Email check error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         });
     }

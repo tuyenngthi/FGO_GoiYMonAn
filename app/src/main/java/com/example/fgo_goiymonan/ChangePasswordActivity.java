@@ -50,7 +50,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private void changePassword() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null || user.getEmail() == null) {
-            showError("Bạn chưa đăng nhập.");
+            showError("You are not logged in.");
             return;
         }
 
@@ -59,17 +59,17 @@ public class ChangePasswordActivity extends AppCompatActivity {
         String confirmPass = etConfirmPassword.getText().toString().trim();
 
         if (oldPass.isEmpty() || newPass.isEmpty() || confirmPass.isEmpty()) {
-            showError("Vui lòng điền đầy đủ thông tin.");
+            showError("Please fill in all information.");
             return;
         }
 
         if (!newPass.equals(confirmPass)) {
-            showError("Mật khẩu mới không khớp.");
+            showError("Password does not match.");
             return;
         }
 
         if (newPass.length() < 6) {
-            showError("Mật khẩu phải từ 6 ký tự trở lên.");
+            showError("The password must be at least 6 characters long.");
             return;
         }
 
@@ -78,14 +78,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 user.updatePassword(newPass).addOnCompleteListener(updateTask -> {
                     if (updateTask.isSuccessful()) {
-                        Toast.makeText(this, "Đổi mật khẩu thành công.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Password changed successfully.", Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
-                        showError("Lỗi khi đổi mật khẩu: " + updateTask.getException().getMessage());
+                        showError("Error changing password: " + updateTask.getException().getMessage());
                     }
                 });
             } else {
-                showError("Mật khẩu cũ không đúng.");
+                showError("Password is incorrect.");
             }
         });
     }

@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         if (currentUser != null) {
             if (currentUser.isEmailVerified()) {
                 //Email đã xác minh, cho phép đăng nhập
-                Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(LoginActivity.this, SearchActivity.class);
                 startActivity(intent);
                 finish();
@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             else {
                 //Email chưa xác minh, yêu cầu xác minh và đăng xuất
-                Toast.makeText(this, "Vui lòng xác minh email: " + currentUser.getEmail(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Please verify email: " + currentUser.getEmail(), Toast.LENGTH_LONG).show();
                 currentUser.sendEmailVerification();
                 mAuth.signOut();
             }
@@ -94,20 +94,20 @@ public class LoginActivity extends AppCompatActivity {
                         if (user != null) {
                             //nếu user đã xác minh thì cho phép đăng nhập
                             if (user.isEmailVerified()) {
-                                Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(LoginActivity.this, SearchActivity.class);
                                 startActivity(intent);
                                 finish();
                             }
                             else {
                                 //nếu email chưa xác minh thì thông báo và gửi lại mail xác minh
-                                Toast.makeText(LoginActivity.this, "Vui lòng xác minh email! Email xác minh đã được gửi lại.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(LoginActivity.this, "Please verify email! Verification email has been resent.", Toast.LENGTH_LONG).show();
                                 user.sendEmailVerification().addOnCompleteListener(task_ -> {
                                     if (task_.isSuccessful()) {
-                                        Toast.makeText(LoginActivity.this, "Email xác minh đã được gửi lại. Vui lòng kiểm tra hộp thư!", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(LoginActivity.this, "Verification email has been resent. Please check your inbox!", Toast.LENGTH_LONG).show();
                                     }
                                     else {
-                                        Toast.makeText(LoginActivity.this, "Không thể gửi email xác minh: " + task_.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(LoginActivity.this, "Unable to send verification email: " + task_.getException().getMessage(), Toast.LENGTH_LONG).show();
                                     }
                                 });
                                 mAuth.signOut(); //Đăng xuất để người dùng kh thể truy cập
@@ -115,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                     else {
-                        tvPasswordError.setText("Email hoặc mật khẩu sai!");
+                        tvPasswordError.setText("Incorrect email or password!");
                         tvPasswordError.setVisibility(View.VISIBLE);
                     }
                 });
@@ -185,23 +185,23 @@ public class LoginActivity extends AppCompatActivity {
 
         //Kiểm tra email
         if (email.isEmpty()) {
-            tvEmailError.setText("Email không được để trống.");
+            tvEmailError.setText("The email cannot be empty.");
             tvEmailError.setVisibility(View.VISIBLE);
             isValid = false;
         } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            tvEmailError.setText("Email không hợp lệ.");
+            tvEmailError.setText("Invalid email.");
             tvEmailError.setVisibility(View.VISIBLE);
             isValid = false;
         }
 
         //Kiểm tra mật khẩu
         if (password.isEmpty()) {
-            tvPasswordError.setText("Mật khẩu không được để trống.");
+            tvPasswordError.setText("The password cannot be empty.");
             tvPasswordError.setVisibility(View.VISIBLE);
             isValid = false;
         }
         else if (password.length() < 6 || password.length() >= 4096) {
-            tvPasswordError.setText("Mật khẩu phải có ít nhất 6 ký tự.");
+            tvPasswordError.setText("The password must be at least 6 characters long.");
             tvPasswordError.setVisibility(View.VISIBLE);
             isValid = false;
         }
@@ -212,7 +212,7 @@ public class LoginActivity extends AppCompatActivity {
             boolean hasDigit = password.matches(".*[0-9].*");
             boolean hasSpecialChar = password.matches(".*[!@#$%^&*(),.?\":{}|<>].*");
             if (!hasSpecialChar || !hasDigit || !hasLowerCase || !hasUpperCase) {
-                tvPasswordError.setText("Mật khẩu phải chứa kí tự in hoa, kí tự thường, số và kí tự đặc biệt.");
+                tvPasswordError.setText("The password must contain uppercase letters, lowercase letters, numbers, and special characters.");
                 tvPasswordError.setVisibility(View.VISIBLE);
                 isValid = false;
             }

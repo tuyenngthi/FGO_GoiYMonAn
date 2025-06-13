@@ -76,7 +76,7 @@ public class AccountActivity extends AppCompatActivity {
         //Bắt sự kiện cho nút đăng xuất
         btnLogout.setOnClickListener(v -> {
             mAuth.signOut();
-            Toast.makeText(this, "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Logout successful", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(AccountActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
