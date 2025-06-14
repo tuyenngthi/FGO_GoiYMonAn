@@ -5,6 +5,7 @@ import static android.text.InputType.TYPE_CLASS_TEXT;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -32,7 +33,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class SignUpActivity extends AppCompatActivity {
     private EditText passwordEditText, confirmPasswordEditText, emailEditText;
-    private TextView emailErrorTextView, passwordErrorTextView, confirmPasswordErrorTextView;
+    private TextView emailErrorTextView, passwordErrorTextView, confirmPasswordErrorTextView, tvLogin2;
     private Button signUpButton;
     private TextView logInTextView;
     private FirebaseAuth mAuth;
@@ -55,6 +56,8 @@ public class SignUpActivity extends AppCompatActivity {
         emailErrorTextView = findViewById(R.id.tvEmailError);
         passwordErrorTextView = findViewById(R.id.tvPasswordError);
         confirmPasswordErrorTextView = findViewById(R.id.tvConfirmPasswordError);
+        tvLogin2 = findViewById(R.id.tvLogin2);
+        tvLogin2.setText(Html.fromHtml("<u>Log in now</u>", Html.FROM_HTML_MODE_LEGACY));
 
         //Chuyển đổi ẩn hiện mật khẩu bằng cách nhấn icon_eye
         setupPasswordToggle(passwordEditText);
@@ -105,7 +108,6 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         //Chuyển sang form Đăng nhập bằng việc nhấn vào textview Đăng nhập
-        logInTextView = findViewById(R.id.tvLogin2);
         logInTextView.setOnClickListener(v -> { //Bắt sự kiện cho TextView
             // Chuyển sang LogInActivity
             Intent intent = new Intent(SignUpActivity.this, MainActivity.class);

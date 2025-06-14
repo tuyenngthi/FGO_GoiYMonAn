@@ -2,6 +2,7 @@ package com.example.fgo_goiymonan;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
@@ -40,6 +41,8 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         tvSignUp = findViewById(R.id.tvSignUp2);
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
+        tvForgotPassword.setText(Html.fromHtml("<u>Forgot Password?</u>", Html.FROM_HTML_MODE_LEGACY));
+        tvSignUp.setText(Html.fromHtml("<u>Sign up here</u>", Html.FROM_HTML_MODE_LEGACY));
 
         //Khởi động FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
