@@ -1,8 +1,10 @@
 package com.example.fgo_goiymonan;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -26,34 +28,37 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SearchActivity extends AppCompatActivity {
+
+    TextView tvSearch;
+    TextView tvViewed;
     private TextView tvAccount;
     private EditText edtSearch;
     private RecyclerView rvRecipes;
     private RecipeAdapter recipeAdapter;
     private SpoonacularApiService apiService;
-    private final String apiKey = "147bf705637143f38526db405bba7da5";
+    private final String apiKey = "3c36606ffb104e3283f89d460c802e52";
 
     private TextView tvNoResult; // thêm dòng này
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_search);
 
+        tvViewed = findViewById(R.id.tvViewed);
+        tvSearch = findViewById(R.id.tvSearch);
         tvAccount = findViewById(R.id.tvAccount);
         edtSearch = findViewById(R.id.edtSearch);
         rvRecipes = findViewById(R.id.rvRecipes);
         tvNoResult = findViewById(R.id.tvNoResult); // ánh xạ
 
         rvRecipes.setLayoutManager(new LinearLayoutManager(this));
+        // Khởi tạo adapter trước
         recipeAdapter = new RecipeAdapter(new ArrayList<>());
         rvRecipes.setAdapter(recipeAdapter);
 
-        tvAccount.setOnClickListener(v -> {
-            startActivity(new android.content.Intent(this, AccountActivity.class));
-        });
-
+        // Khởi tạo Retrofit + apiService trước
         Gson gson = new GsonBuilder().create();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.spoonacular.com/")
@@ -64,6 +69,21 @@ public class SearchActivity extends AppCompatActivity {
 
         // Gọi mặc định hiển thị món ăn đầu tiên
         searchRecipes("chicken");
+
+        // Add item click listener for RecyclerView
+        recipeAdapter.setOnItemClickListener(recipe -> {
+            Intent intent = new Intent(SearchActivity.this, FoodDetailActivity.class);
+            intent.putExtra("recipe", recipe);
+            startActivity(intent);
+        });
+
+        tvAccount.setOnClickListener(v -> {
+            startActivity(new android.content.Intent(this, AccountActivity.class));
+        });
+
+        tvViewed.setOnClickListener(v -> {
+            startActivity(new Intent(this, ViewedActivity.class));
+        });
 
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -120,7 +140,6 @@ public class SearchActivity extends AppCompatActivity {
                     List<RecipeDetail.ExtendedIngredient> ingredientsList = response.body().getExtendedIngredients();
                     StringBuilder ingredientsText = new StringBuilder();
 
-                    // ✅ Giới hạn hiển thị tối đa 3 nguyên liệu
                     for (int i = 0; i < Math.min(3, ingredientsList.size()); i++) {
                         ingredientsText.append(ingredientsList.get(i).getOriginal());
                         if (i < Math.min(3, ingredientsList.size()) - 1) {
@@ -129,15 +148,24 @@ public class SearchActivity extends AppCompatActivity {
                     }
 
                     recipe.setIngredients(ingredientsText.toString().trim());
+                    recipe.setReadyInMinutes(response.body().getReadyInMinutes());
+                    recipe.setInstructions(response.body().getInstructions() != null ? response.body().getInstructions() : "Instructions not available.");
 
-                    // Cập nhật adapter
-                    recipeAdapter.notifyDataSetChanged();
+                    int index = recipeAdapter.getRecipeList().indexOf(recipe);
+                    Log.d("SearchActivity", "Updating recipe at index: " + index);
+
+                    if (index != -1) {
+                        recipeAdapter.notifyItemChanged(index);
+                    } else {
+                        recipeAdapter.notifyDataSetChanged();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<RecipeDetail> call, Throwable t) {
-                // Có thể log nếu cần
+                // Log error nếu cần
+                Log.e("SearchActivity", "Failed to load recipe detail", t);
             }
         });
     }

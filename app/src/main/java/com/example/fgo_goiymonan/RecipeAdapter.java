@@ -3,6 +3,7 @@ package com.example.fgo_goiymonan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +17,12 @@ import java.util.List;
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
     private List<Recipe> recipeList;
 
+    private OnItemClickListener listener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
     public RecipeAdapter(List<Recipe> recipeList) {
         this.recipeList = recipeList;
     }
@@ -23,6 +30,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     public void updateData(List<Recipe> newList) {
         recipeList = newList;
         notifyDataSetChanged();
+    }
+
+    public List<Recipe> getRecipeList() {
+        return recipeList;
     }
 
     @NonNull
@@ -38,7 +49,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         holder.tvTitle.setText(recipe.getTitle());
         holder.tvIngredients.setText(recipe.getIngredients()); // Thêm dòng này
         Picasso.get().load(recipe.getImage()).into(holder.ivImage);
+
+        // Set click listener for the item
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(recipe);
+            }
+        });
     }
+
 
     @Override
     public int getItemCount() {
@@ -55,5 +74,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvIngredients = itemView.findViewById(R.id.tvIngredients); // Ánh xạ view
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Recipe recipe);
     }
 }
