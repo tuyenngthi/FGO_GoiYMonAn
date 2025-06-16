@@ -5,5 +5,5 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.FGO_GoiYMonAn" parent="Base.Theme.FGO_GoiYMonAn" />
+    <style name="Theme.FGO_GoiYMonAn" parent="Theme.AppCompat.Light.NoActionBar" />
 </resources>
