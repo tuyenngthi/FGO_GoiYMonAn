@@ -35,7 +35,6 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText passwordEditText, confirmPasswordEditText, emailEditText;
     private TextView emailErrorTextView, passwordErrorTextView, confirmPasswordErrorTextView, tvLogin2;
     private Button signUpButton;
-    private TextView logInTextView;
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,9 +107,9 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         //Chuyển sang form Đăng nhập bằng việc nhấn vào textview Đăng nhập
-        logInTextView.setOnClickListener(v -> { //Bắt sự kiện cho TextView
+        tvLogin2.setOnClickListener(v -> { //Bắt sự kiện cho TextView
             // Chuyển sang LogInActivity
-            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
             startActivity(intent);
         });
     }

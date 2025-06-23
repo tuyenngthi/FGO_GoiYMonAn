@@ -3,7 +3,6 @@ package com.example.fgo_goiymonan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,8 +15,11 @@ import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
     private List<Recipe> recipeList;
-
     private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(Recipe recipe);
+    }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
@@ -47,17 +49,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
         Recipe recipe = recipeList.get(position);
         holder.tvTitle.setText(recipe.getTitle());
-        holder.tvIngredients.setText(recipe.getIngredients()); // Thêm dòng này
+        holder.tvIngredients.setText(recipe.getIngredients());
         Picasso.get().load(recipe.getImage()).into(holder.ivImage);
 
-        // Set click listener for the item
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onItemClick(recipe);
             }
         });
     }
-
 
     @Override
     public int getItemCount() {
@@ -66,17 +66,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     public static class RecipeViewHolder extends RecyclerView.ViewHolder {
         ImageView ivImage;
-        TextView tvTitle, tvIngredients; // Thêm biến tvIngredients
+        TextView tvTitle, tvIngredients;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
             ivImage = itemView.findViewById(R.id.ivImage);
             tvTitle = itemView.findViewById(R.id.tvTitle);
-            tvIngredients = itemView.findViewById(R.id.tvIngredients); // Ánh xạ view
+            tvIngredients = itemView.findViewById(R.id.tvIngredients);
         }
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(Recipe recipe);
     }
 }

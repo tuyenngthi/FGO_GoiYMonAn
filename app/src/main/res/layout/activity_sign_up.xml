@@ -136,6 +136,7 @@
     <!-- Văn bản "Bạn đã có tài khoản?" -->
 
     <!-- Link "Đăng nhập" -->
+
     <TextView
         android:id="@+id/tvLogin"
         android:layout_width="wrap_content"
@@ -146,7 +147,7 @@
         android:textColor="#757575"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.366"
+        app:layout_constraintHorizontal_bias="0.297"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnSignUp" />
 
@@ -161,7 +162,7 @@
         android:textSize="14sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.747"
+        app:layout_constraintHorizontal_bias="0.809"
         app:layout_constraintRight_toLeftOf="@+id/tvLogin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnSignUp" />

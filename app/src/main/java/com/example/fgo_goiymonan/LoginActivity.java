@@ -127,20 +127,16 @@ public class LoginActivity extends AppCompatActivity {
 
         //Thêm sự kiện nhấn cho TextView Quên mật khẩu
         tvForgotPassword.setOnClickListener(v -> {
-
-
             // Chuyển sang ForgotPasswordActivity
             Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
             startActivity(intent);
         });
-
 
         //Thêm sự kiện nhấn cho TextView Đăng ký
         tvSignUp.setOnClickListener(v -> {
             //Chuyển sang SignUpActivity
             Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
             startActivity(intent);
-            finish();
         });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

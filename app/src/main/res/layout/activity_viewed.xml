@@ -104,7 +104,7 @@
         android:id="@+id/tvNoResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No matching results."
+        android:text="No recipes viewed yet."
         android:textSize="16sp"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/rvRecipes"

@@ -4,13 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,36 +27,31 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SearchActivity extends AppCompatActivity {
 
-    TextView tvSearch;
-    TextView tvViewed;
-    private TextView tvAccount;
     private EditText edtSearch;
     private RecyclerView rvRecipes;
     private RecipeAdapter recipeAdapter;
     private SpoonacularApiService apiService;
-    private final String apiKey = "3c36606ffb104e3283f89d460c802e52";
+    private final String apiKey = "b73324a30437465c891f07f9c5dea8e6";
+    private TextView tvNoResult;
 
-    private TextView tvNoResult; // thêm dòng này
+    private TextView tvFavorite, tvViewed, tvAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        tvViewed = findViewById(R.id.tvViewed);
-        tvSearch = findViewById(R.id.tvSearch);
-        tvAccount = findViewById(R.id.tvAccount);
         edtSearch = findViewById(R.id.edtSearch);
         rvRecipes = findViewById(R.id.rvRecipes);
-        tvNoResult = findViewById(R.id.tvNoResult); // ánh xạ
+        tvNoResult = findViewById(R.id.tvNoResult);
+        tvFavorite = findViewById(R.id.tvFavorite);
+        tvViewed = findViewById(R.id.tvViewed);
+        tvAccount = findViewById(R.id.tvAccount);
 
         rvRecipes.setLayoutManager(new LinearLayoutManager(this));
-        // Khởi tạo adapter trước
         recipeAdapter = new RecipeAdapter(new ArrayList<>());
         rvRecipes.setAdapter(recipeAdapter);
 
-        // Khởi tạo Retrofit + apiService trước
         Gson gson = new GsonBuilder().create();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.spoonacular.com/")
@@ -66,37 +59,31 @@ public class SearchActivity extends AppCompatActivity {
                 .build();
 
         apiService = retrofit.create(SpoonacularApiService.class);
-
-        // Gọi mặc định hiển thị món ăn đầu tiên
         searchRecipes("chicken");
 
-        // Add item click listener for RecyclerView
         recipeAdapter.setOnItemClickListener(recipe -> {
             Intent intent = new Intent(SearchActivity.this, FoodDetailActivity.class);
-            intent.putExtra("recipe", recipe);
+            intent.putExtra("id", recipe.getId());
+            intent.putExtra("title", recipe.getTitle());
+            intent.putExtra("image", recipe.getImage());
+            intent.putExtra("ingredients", recipe.getIngredients());
+            intent.putExtra("readyInMinutes", recipe.getReadyInMinutes());
+            intent.putExtra("instructions", recipe.getInstructions());
             startActivity(intent);
         });
 
-        tvAccount.setOnClickListener(v -> {
-            startActivity(new android.content.Intent(this, AccountActivity.class));
-        });
-
-        tvViewed.setOnClickListener(v -> {
-            startActivity(new Intent(this, ViewedActivity.class));
-        });
-
         edtSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
                 searchRecipes(s.toString().trim());
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
+            @Override public void afterTextChanged(Editable s) {}
         });
+
+        // XỬ LÝ CHUYỂN TAB
+        tvFavorite.setOnClickListener(v -> startActivity(new Intent(this, FavoriteActivity.class)));
+        tvViewed.setOnClickListener(v -> startActivity(new Intent(this, ViewedActivity.class)));
+        tvAccount.setOnClickListener(v -> startActivity(new Intent(this, AccountActivity.class)));
     }
 
     private void searchRecipes(String query) {
@@ -108,18 +95,14 @@ public class SearchActivity extends AppCompatActivity {
                     List<Recipe> recipes = response.body().getResults();
                     if (recipes.isEmpty()) {
                         tvNoResult.setVisibility(View.VISIBLE);
-                        recipeAdapter.updateData(new ArrayList<>()); // Xóa dữ liệu cũ
+                        recipeAdapter.updateData(new ArrayList<>());
                         return;
                     } else {
-                        tvNoResult.setVisibility(View.GONE); // Ẩn nếu có kết quả
+                        tvNoResult.setVisibility(View.GONE);
                     }
-
-                    // Gọi API lấy nguyên liệu cho từng món
                     for (Recipe recipe : recipes) {
                         fetchRecipeIngredients(recipe);
                     }
-
-                    // Hiển thị danh sách ban đầu (chưa có nguyên liệu)
                     recipeAdapter.updateData(recipes);
                 }
             }
@@ -139,35 +122,21 @@ public class SearchActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     List<RecipeDetail.ExtendedIngredient> ingredientsList = response.body().getExtendedIngredients();
                     StringBuilder ingredientsText = new StringBuilder();
-
                     for (int i = 0; i < Math.min(3, ingredientsList.size()); i++) {
                         ingredientsText.append(ingredientsList.get(i).getOriginal());
                         if (i < Math.min(3, ingredientsList.size()) - 1) {
                             ingredientsText.append(", ");
                         }
                     }
-
                     recipe.setIngredients(ingredientsText.toString().trim());
                     recipe.setReadyInMinutes(response.body().getReadyInMinutes());
                     recipe.setInstructions(response.body().getInstructions() != null ? response.body().getInstructions() : "Instructions not available.");
-
-                    int index = recipeAdapter.getRecipeList().indexOf(recipe);
-                    Log.d("SearchActivity", "Updating recipe at index: " + index);
-
-                    if (index != -1) {
-                        recipeAdapter.notifyItemChanged(index);
-                    } else {
-                        recipeAdapter.notifyDataSetChanged();
-                    }
+                    recipeAdapter.notifyDataSetChanged();
                 }
             }
 
             @Override
-            public void onFailure(Call<RecipeDetail> call, Throwable t) {
-                // Log error nếu cần
-                Log.e("SearchActivity", "Failed to load recipe detail", t);
-            }
+            public void onFailure(Call<RecipeDetail> call, Throwable t) {}
         });
     }
-
 }

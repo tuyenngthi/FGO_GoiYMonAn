@@ -7,7 +7,7 @@ public class Recipe implements Serializable{
     private int id;
     private String title;
     private String image;
-    private String ingredients; // Thêm thuộc tính để lưu nguyên liệu
+    private String ingredients;
 
     private int readyInMinutes;
     private String instructions;
